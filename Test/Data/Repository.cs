@@ -8,9 +8,19 @@ namespace Data
 {
     public class Repository : IRepository
     {
+        private RepositoryContext Context { get; set; }
+
+        public Repository()
+        {
+            Context = new RepositoryContext();
+        }
+
         public async Task<Post> GetPost(string id)
         {
             await Task.CompletedTask;
+
+            var post = await Context.FindAsync<Post>(id);
+
             throw new System.NotImplementedException();
         }
 
