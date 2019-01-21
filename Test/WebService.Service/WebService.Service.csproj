@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\WebService.Interfaces\WebService.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web.Http">
+      <HintPath>C:\Users\Aliaksei_Yarats\.nuget\packages\microsoft.aspnet.webapi.core\5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
