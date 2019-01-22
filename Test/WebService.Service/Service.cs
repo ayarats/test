@@ -36,7 +36,7 @@ namespace WebService.Service
 
         public async Task<HttpStatusCode> AddComment(Comment comment)
         {
-            if (comment == null)
+            if (comment == null || comment.Post == null || string.IsNullOrWhiteSpace(comment.Text))
             {
                 return HttpStatusCode.BadRequest;
             }
@@ -66,13 +66,12 @@ namespace WebService.Service
             {
                 return HttpStatusCode.InternalServerError;
             }
-
             return HttpStatusCode.OK;
         }
 
         public async Task<HttpStatusCode> AddPost(Post post)
         {
-            if (post == null)
+            if (post == null || string.IsNullOrWhiteSpace(post.Text))
             {
                 return HttpStatusCode.BadRequest;
             }

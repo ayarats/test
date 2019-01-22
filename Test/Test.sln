@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "Test\WebService.csproj", "{8BC8E093-FF54-401F-896E-D3E90F03A99F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService", "Test\WebService.csproj", "{8BC8E093-FF54-401F-896E-D3E90F03A99F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{A185B74C-2346-426E-8039-3FDDD674947A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A185B74C-2346-426E-8039-3FDDD674947A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{1D299DF8-A12B-4651-BA76-CBE1E1E57D93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Service", "WebService.Service\WebService.Service.csproj", "{C4AC2563-7323-46EC-817F-E8D16B271BBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService.Service", "WebService.Service\WebService.Service.csproj", "{C4AC2563-7323-46EC-817F-E8D16B271BBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Interfaces", "WebService.Interfaces\WebService.Interfaces.csproj", "{6BA5138C-28C9-4967-B8C8-AC29576A4870}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService.Interfaces", "WebService.Interfaces\WebService.Interfaces.csproj", "{6BA5138C-28C9-4967-B8C8-AC29576A4870}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{A1F99F75-BCA6-4C4A-A822-46D2CC1ACB20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{A1F99F75-BCA6-4C4A-A822-46D2CC1ACB20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService.Test", "WebService.Test\WebService.Test.csproj", "{B8C4ACDC-5FCE-4C40-97CF-F4EDE12BB7FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{A185B74C-2346-426E-8039-3FDDD674947A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A185B74C-2346-426E-8039-3FDDD674947A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A185B74C-2346-426E-8039-3FDDD674947A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D299DF8-A12B-4651-BA76-CBE1E1E57D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D299DF8-A12B-4651-BA76-CBE1E1E57D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D299DF8-A12B-4651-BA76-CBE1E1E57D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D299DF8-A12B-4651-BA76-CBE1E1E57D93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4AC2563-7323-46EC-817F-E8D16B271BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4AC2563-7323-46EC-817F-E8D16B271BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4AC2563-7323-46EC-817F-E8D16B271BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{A1F99F75-BCA6-4C4A-A822-46D2CC1ACB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1F99F75-BCA6-4C4A-A822-46D2CC1ACB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1F99F75-BCA6-4C4A-A822-46D2CC1ACB20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8C4ACDC-5FCE-4C40-97CF-F4EDE12BB7FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8C4ACDC-5FCE-4C40-97CF-F4EDE12BB7FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8C4ACDC-5FCE-4C40-97CF-F4EDE12BB7FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8C4ACDC-5FCE-4C40-97CF-F4EDE12BB7FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

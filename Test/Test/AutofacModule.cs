@@ -1,12 +1,18 @@
 ﻿using Autofac;
 using Data;
+using Microsoft.Extensions.Configuration;
 using WebService.Interfaces;
 
 namespace WebService
 {
     public class AutofacModule : Module
     {
-        public AutofacModule() { }
+        private readonly IConfiguration _configuration;
+
+        public AutofacModule(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         protected override void Load(ContainerBuilder builder)
         {

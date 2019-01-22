@@ -30,12 +30,9 @@ namespace WebService
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString));
-
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule(new AutofacModule());
+            builder.RegisterModule(new AutofacModule(Configuration));
             AppContainer = builder.Build();
             return new AutofacServiceProvider(AppContainer);
         }

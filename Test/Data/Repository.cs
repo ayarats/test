@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Domain;
 using WebService.Interfaces;
 
@@ -8,38 +8,74 @@ namespace Data
 {
     public class Repository : IRepository
     {
-        private RepositoryContext Context { get; set; }
+        private readonly RepositoryContext _context;
 
-        public Repository()
+        public Repository(RepositoryContext context)
         {
-            Context = new RepositoryContext();
+            _context = context;
+        }
+
+        public IQueryable<Post> GetAllPosts()
+        {
+            return _context.Posts.AsQueryable();
         }
 
         public async Task<Post> GetPost(string id)
         {
-            await Task.CompletedTask;
-
-            var post = await Context.FindAsync<Post>(id);
-
-            throw new System.NotImplementedException();
+            var post = await _context.FindAsync<Post>(id);
+            return post;
         }
 
         public async Task AddPost(Post post)
         {
-            await Task.CompletedTask;
-            throw new System.NotImplementedException();
+            try
+            {
+                await _context.AddAsync(post);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
 
         public async Task AddComment(Comment comment)
         {
+            try
+            {
+                await _context.AddAsync(comment);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception();
+            }
             await Task.CompletedTask;
-            throw new System.NotImplementedException();
         }
 
         public async Task Delete(string id)
         {
-            await Task.CompletedTask;
-            throw new System.NotImplementedException();
+            var post = await GetPost(id);
+            if (post == null)
+            {
+                return;
+            }
+            try
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    post.Comments?.ForEach(x => _context.Remove(x.Id));
+                    _context.Remove(post);
+                    if (_context.SaveChanges() > 0)
+                    {
+                        transaction.Commit();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception();
+            }
         }
     }
 }
