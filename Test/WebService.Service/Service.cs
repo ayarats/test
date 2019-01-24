@@ -1,7 +1,5 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Domain;
 using WebService.Interfaces;
 
@@ -9,11 +7,11 @@ namespace WebService.Service
 {
     public class Service : IService
     {
-        private readonly IRepository _repository;
+        public IRepository Repository { get; set; }
 
         public Service(IRepository repository)
         {
-            _repository = repository;
+            Repository = repository;
         }
 
         public async Task<Post> GetPost(string id)
@@ -25,7 +23,7 @@ namespace WebService.Service
             var post = new Post();
             try
             {
-                post = await _repository.GetPost(id);
+                post = await Repository.GetPost(id);
             }
             catch
             {
@@ -42,7 +40,7 @@ namespace WebService.Service
             }
             try
             {
-                await _repository.AddComment(comment);
+                await Repository.Add(comment);
             }
             catch
             {
@@ -60,7 +58,7 @@ namespace WebService.Service
             }
             try
             {
-                await _repository.Delete(id);
+                await Repository.Delete(id);
             }
             catch
             {
@@ -77,7 +75,7 @@ namespace WebService.Service
             }
             try
             {
-                await _repository.AddPost(post);
+                await Repository.Add(post);
             }
             catch
             {

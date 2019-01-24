@@ -2,6 +2,7 @@
 using System.Net;
 using Data;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using WebService.Interfaces;
 using Xunit;
 
@@ -10,8 +11,6 @@ namespace WebService.Test
     [Trait("Service", "All")]
     public class ServiceTest
     {
-        private const string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=testDB;Trusted_Connection=True;MultipleActiveResultSets=true";
         private readonly RepositoryContext _context;
         private readonly IRepository _repository;
         private readonly IService _service;
@@ -68,26 +67,29 @@ namespace WebService.Test
 
             Assert.Equal(HttpStatusCode.OK, result);
             Assert.Equal("This is comment", newPost.Comments.First().Text);
-
-            RemoveAllPosts();
         }
 
         [Theory]
-        [InlineData("qwe", "2")]
-        [InlineData("asd", "1")]
-        [InlineData("zxc", "4")]
-        [InlineData("Remove me", "5")]
-        public async void RemovePost_ShouldPass(string text, string id)
+        [InlineData("qwe")]
+        [InlineData("asd")]
+        [InlineData("zxc")]
+        [InlineData("Remove me")]
+        public async void RemovePost_ShouldPass(string text)
         {
             RemoveAllPosts();
 
-            var post = new Post {Text = text, Id=id};
-            await _repository.AddPost(post);
-            await _service.Delete(id);
+            var post = new Post {Text = text};
+            await _repository.Add(post);
+
+            var added = _repository.GetAllPosts().First();
+            await _service.Delete(added.Id);
 
             var find = await _repository.GetPost(id);
 
             Assert.Null(find);
+
+
+            RemoveAllPosts();
         }
 
         private void RemoveAllPosts()

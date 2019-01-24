@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace WebService.Models
+namespace TestApp.Models
 {
     public class PostModel
     {
         public string Id { get; set; }
+        [Required]
+        [MinLength(1)]
         public string Text { get; set; }
         public List<CommentModel> Comments { get; set; }
     }

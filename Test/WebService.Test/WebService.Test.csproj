@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Test\WebService.csproj" />
+    <ProjectReference Include="..\WebService.Service\WebService.Service.csproj" />
   </ItemGroup>
 
 </Project>

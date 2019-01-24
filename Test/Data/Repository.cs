@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WebService.Interfaces;
 
 namespace Data
@@ -17,21 +19,36 @@ namespace Data
 
         public IQueryable<Post> GetAllPosts()
         {
-            return _context.Posts.AsQueryable();
+            try
+            {
+                return _context.Posts.Include(x => x.Comments).AsQueryable();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<Post> GetPost(string id)
         {
-            var post = await _context.FindAsync<Post>(id);
-            return post;
+            try
+            {
+                var post = await _context.FindAsync<Post>(id);
+                return post;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        public async Task AddPost(Post post)
+        public async Task<T> Add<T>(T entity) where T : class
         {
             try
             {
-                await _context.AddAsync(post);
+                await _context.AddAsync(entity);
                 await _context.SaveChangesAsync();
+                return entity;
             }
             catch (Exception ex)
             {
@@ -39,23 +56,9 @@ namespace Data
             }
         }
 
-        public async Task AddComment(Comment comment)
-        {
-            try
-            {
-                await _context.AddAsync(comment);
-                await _context.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception();
-            }
-            await Task.CompletedTask;
-        }
-
         public async Task Delete(string id)
         {
-            var post = await GetPost(id);
+            var post = await _context.FindAsync<Post>(id);
             if (post == null)
             {
                 return;
@@ -72,7 +75,7 @@ namespace Data
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception();
             }
