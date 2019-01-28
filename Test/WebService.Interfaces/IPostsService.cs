@@ -1,15 +1,13 @@
-﻿using System.Net;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Domain;
 
 namespace WebService.Interfaces
 {
-    public interface IService
+    public interface IPostsService
     {
         Task<Post> GetPost(string id);
         Task<Post> AddPost(Post post);
-        Task<Comment> AddComment(Comment comment);
-        Task<bool> Delete(string id);
+        Task<bool> DeletePost(string id);
     }
 }

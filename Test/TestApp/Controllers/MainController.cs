@@ -13,10 +13,10 @@ namespace TestApp.Controllers
     [Route("api/[controller]")]
     public class MainController : ControllerBase
     {
-        private readonly IService _service;
+        private readonly IPostsService _service;
         private readonly IMapper _mapper;
 
-        public MainController(IService service, IMapper mapper)
+        public MainController(IPostsService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -37,7 +37,7 @@ namespace TestApp.Controllers
             return NotFound();
         }
 
-        [HttpPost("post")]
+        [HttpPost]
         public async Task<IActionResult> AddPost(PostModel post)
         {
             if (ModelState.IsValid)
@@ -59,28 +59,6 @@ namespace TestApp.Controllers
             return BadRequest(post);
         }
 
-        [HttpPost("comment")]
-        public async Task<IActionResult> AddComment(CommentModel comment)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var add = await _service.AddComment(_mapper.Map<Comment>(comment));
-                    return Ok(add);
-                }
-                catch (ArgumentException ex)
-                {
-                    return BadRequest("Value cannot be null.");
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Inner exception.");
-                }
-            }
-            return BadRequest(comment);
-        }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(string postId)
         {
@@ -90,7 +68,7 @@ namespace TestApp.Controllers
             }
             try
             {
-                var delete = await _service.Delete(postId);
+                var delete = await _service.DeletePost(postId);
                 return Ok(delete);
             }
             catch (ArgumentNullException ex)
