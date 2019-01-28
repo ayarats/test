@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using AutoMapper;
 using Data;
@@ -11,7 +12,10 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
+using TestApp.Logger;
+using TestApp.Models;
 using WebService.Interfaces;
 using WebService.Service;
 
@@ -38,7 +42,7 @@ namespace TestApp
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -48,6 +52,32 @@ namespace TestApp
             {
                 app.UseHsts();
             }
+
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Configuration["Logging:FileName"]));
+            var logger = loggerFactory.CreateLogger(Configuration["Logging:LoggerName"]);
+
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var errFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    var error = errFeature.Error;
+                    var errResult = new ErrorModel();
+                    if (!(error is ArgumentNullException) && !(error is ArgumentException))
+                    {
+                        errResult.Title = "Unhandled exception.";
+                        errResult.Details = error.Message;
+                        errResult.Status = 500;
+                        errResult.Type = error.GetType().ToString();
+                        errResult.InnerException = error.InnerException.Message;
+                    }
+
+                    logger.LogError(errResult.ToString());
+
+                    context.Response.StatusCode = errResult.Status.Value;
+                });
+
+            });
 
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, new SwaggerUiOwinSettings());
             app.UseMvc();

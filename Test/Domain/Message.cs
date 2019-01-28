@@ -1,6 +1,4 @@
-﻿using Microsoft.Build.Framework;
-
-namespace Domain
+﻿namespace Domain
 {
     public class Message
     {

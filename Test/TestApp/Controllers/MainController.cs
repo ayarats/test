@@ -42,19 +42,19 @@ namespace TestApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
+                //try
+                //{
                     var add = await _service.AddPost(_mapper.Map<Post>(post));
                     return Ok(add);
-                }
-                catch (ArgumentNullException ex)
-                {
-                    return BadRequest("value cannot be null.");
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Inner exception.");
-                }
+                //}
+                //catch (ArgumentNullException ex)
+                //{
+                //    return BadRequest("value cannot be null.");
+                //}
+                //catch (Exception ex)
+                //{
+                //    return BadRequest("Inner exception.");
+                //}
             }
             return BadRequest(post);
         }
