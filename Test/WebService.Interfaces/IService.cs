@@ -8,8 +8,8 @@ namespace WebService.Interfaces
     public interface IService
     {
         Task<Post> GetPost(string id);
-        Task<HttpStatusCode> AddPost(Post post);
-        Task<HttpStatusCode> AddComment(Comment comment);
-        Task<HttpStatusCode> Delete(string id);
+        Task<Post> AddPost(Post post);
+        Task<Comment> AddComment(Comment comment);
+        Task<bool> Delete(string id);
     }
 }

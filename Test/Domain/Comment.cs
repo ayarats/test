@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using Microsoft.Build.Framework;
+
+namespace Domain
 {
     public class Comment : Message
     {

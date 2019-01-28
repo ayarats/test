@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20190122121748_Init")]
-    partial class Init
+    [Migration("20190128104655_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,7 @@ namespace Data.Migrations
 
                     b.Property<string>("PostId");
 
-                    b.Property<string>("Text")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 
@@ -42,8 +41,7 @@ namespace Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Text")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 

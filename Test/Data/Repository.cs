@@ -19,65 +19,38 @@ namespace Data
 
         public IQueryable<Post> GetAllPosts()
         {
-            try
-            {
-                return _context.Posts.Include(x => x.Comments).AsQueryable();
-            }
-            catch
-            {
-                return null;
-            }
+            return _context.Posts.Include(x => x.Comments).AsQueryable();
         }
 
         public async Task<Post> GetPost(string id)
         {
-            try
-            {
-                var post = await _context.FindAsync<Post>(id);
-                return post;
-            }
-            catch
-            {
-                return null;
-            }
+            return await _context.FindAsync<Post>(id);
         }
 
-        public async Task<T> Add<T>(T entity) where T : class
+        public async Task<T> Add<T>(T entity) where T : Message
         {
-            try
-            {
-                await _context.AddAsync(entity);
-                await _context.SaveChangesAsync();
-                return entity;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception();
-            }
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task Delete(string id)
+        public async Task<bool> Delete(string id)
         {
             var post = await _context.FindAsync<Post>(id);
             if (post == null)
             {
-                return;
+                return false;
             }
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                using (var transaction = _context.Database.BeginTransaction())
+                post.Comments?.ForEach(x => _context.Remove(x));
+                _context.Remove(post);
+                if (_context.SaveChanges() > 0)
                 {
-                    post.Comments?.ForEach(x => _context.Remove(x.Id));
-                    _context.Remove(post);
-                    if (_context.SaveChanges() > 0)
-                    {
-                        transaction.Commit();
-                    }
+                    transaction.Commit();
+                    return true;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception();
+                return false;
             }
         }
     }

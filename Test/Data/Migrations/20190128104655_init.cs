@@ -2,7 +2,7 @@
 
 namespace Data.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Text = table.Column<string>(nullable: false)
+                    Text = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -23,7 +23,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Text = table.Column<string>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
                     PostId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

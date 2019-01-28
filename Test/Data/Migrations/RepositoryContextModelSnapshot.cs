@@ -25,8 +25,7 @@ namespace Data.Migrations
 
                     b.Property<string>("PostId");
 
-                    b.Property<string>("Text")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 
@@ -40,8 +39,7 @@ namespace Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Text")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 

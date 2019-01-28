@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Domain;
 using WebService.Interfaces;
@@ -18,71 +19,64 @@ namespace WebService.Service
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                return null;
+                throw new ArgumentNullException();
             }
-            var post = new Post();
             try
             {
-                post = await Repository.GetPost(id);
+                return await Repository.GetPost(id);
             }
             catch
             {
-                return null;
+                throw new Exception();
             }
-            return post;
         }
 
-        public async Task<HttpStatusCode> AddComment(Comment comment)
+        public async Task<Comment> AddComment(Comment comment)
         {
             if (comment == null || comment.Post == null || string.IsNullOrWhiteSpace(comment.Text))
             {
-                return HttpStatusCode.BadRequest;
+                throw new ArgumentException();
             }
             try
             {
-                await Repository.Add(comment);
+                return await Repository.Add(comment);
             }
             catch
             {
-                return HttpStatusCode.InternalServerError;
+                throw new Exception();
             }
-
-            return HttpStatusCode.OK;
         }
 
-        public async Task<HttpStatusCode> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                return HttpStatusCode.BadRequest;
+                throw new ArgumentNullException();
             }
             try
             {
-                await Repository.Delete(id);
+                return await Repository.Delete(id);
             }
             catch
             {
-                return HttpStatusCode.InternalServerError;
+                throw new Exception();
             }
-            return HttpStatusCode.OK;
         }
 
-        public async Task<HttpStatusCode> AddPost(Post post)
+        public async Task<Post> AddPost(Post post)
         {
             if (post == null || string.IsNullOrWhiteSpace(post.Text))
             {
-                return HttpStatusCode.BadRequest;
+                throw new ArgumentNullException();
             }
             try
             {
-                await Repository.Add(post);
+                return await Repository.Add(post);
             }
             catch
             {
-                return HttpStatusCode.InternalServerError;
+                throw new Exception();
             }
-
-            return HttpStatusCode.OK;
         }
     }
 }

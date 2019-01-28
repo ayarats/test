@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain;
@@ -39,23 +40,45 @@ namespace TestApp.Controllers
         [HttpPost("post")]
         public async Task<IActionResult> AddPost(PostModel post)
         {
-            var add = await _service.AddPost(_mapper.Map<Post>(post));
-            if (add == HttpStatusCode.OK)
+            if (ModelState.IsValid)
             {
-                return Ok();
+                try
+                {
+                    var add = await _service.AddPost(_mapper.Map<Post>(post));
+                    return Ok(add);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    return BadRequest("value cannot be null.");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Inner exception.");
+                }
             }
-            return BadRequest();
+            return BadRequest(post);
         }
 
         [HttpPost("comment")]
         public async Task<IActionResult> AddComment(CommentModel comment)
         {
-            var add = await _service.AddComment(_mapper.Map<Comment>(comment));
-            if (add == HttpStatusCode.OK)
+            if (ModelState.IsValid)
             {
-                return Ok();
+                try
+                {
+                    var add = await _service.AddComment(_mapper.Map<Comment>(comment));
+                    return Ok(add);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest("Value cannot be null.");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Inner exception.");
+                }
             }
-            return BadRequest();
+            return BadRequest(comment);
         }
 
         [HttpDelete("{id}")]
@@ -65,9 +88,19 @@ namespace TestApp.Controllers
             {
                 return BadRequest();
             }
-            var delete = await _service.Delete(postId);
-
-            return Ok(delete);
+            try
+            {
+                var delete = await _service.Delete(postId);
+                return Ok(delete);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest("Value cannot be null.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Inner exception.");
+            }
         }
     }
 }

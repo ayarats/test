@@ -8,7 +8,7 @@ namespace WebService.Interfaces
     {
         Task<Post> GetPost(string id);
         IQueryable<Post> GetAllPosts();
-        Task Delete(string id);
-        Task<T> Add<T>(T entity) where T : class;
+        Task<bool> Delete(string id);
+        Task<T> Add<T>(T entity) where T : Message;
     }
 }

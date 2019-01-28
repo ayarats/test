@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using Data;
 using Domain;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace WebService.Test
 {
-    [Trait("Service", "All")]
+    //[Trait("Service", "All")]
     public class ServiceTest
     {
         private readonly RepositoryContext _context;
@@ -30,11 +31,8 @@ namespace WebService.Test
         public async void AddPost_ShouldPass(string text)
         {
             RemoveAllPosts();
-            var post = new Post { Text = text };
-            var result = await _service.AddPost(post);
-            var added = _repository.GetAllPosts().First(x => x.Text.Equals(text));
-            Assert.Equal(HttpStatusCode.OK, result);
-            Assert.NotNull(added.Id);
+            var result = await _service.AddPost(new Post { Text = text });
+            Assert.NotNull(result.Id);
             RemoveAllPosts();
         }
 
@@ -44,29 +42,23 @@ namespace WebService.Test
         {
             RemoveAllPosts();
 
-            var post = new Post();
-
-            var add = await _service.AddPost(post);
-
-            Assert.Equal(HttpStatusCode.BadRequest, add);
+            await Assert.ThrowsAnyAsync<ArgumentNullException>(() => _service.AddPost(new Post()));
         }
 
         [Fact]
         public async void AddComment_ShouldPass()
         {
             RemoveAllPosts();
-            var test = _repository.GetAllPosts();
             var post = new Post { Text = "Your add may be placed here!" };
-            await _service.AddPost(post);
-            var addedPost = _repository.GetAllPosts().First(x => x.Text.Equals("Your add may be placed here!"));
+            
+            var addedPost = await _service.AddPost(post);
 
-            var comment = new Comment { Text = "This is comment", Post = addedPost };
+            var result = await _service.AddComment(new Comment { Text = "This is comment", Post = addedPost });
 
-            var result = await _service.AddComment(comment);
-            var newPost = await _repository.GetPost(addedPost.Id);
+            Assert.NotNull(result.Id);
+            Assert.Equal("This is comment", addedPost.Comments.First().Text);
 
-            Assert.Equal(HttpStatusCode.OK, result);
-            Assert.Equal("This is comment", newPost.Comments.First().Text);
+            RemoveAllPosts();
         }
 
         [Theory]
@@ -78,18 +70,44 @@ namespace WebService.Test
         {
             RemoveAllPosts();
 
-            var post = new Post {Text = text};
-            await _repository.Add(post);
+            var post = await _repository.Add(new Post { Text = text });
 
-            var added = _repository.GetAllPosts().First();
-            await _service.Delete(added.Id);
+            var result = await _service.Delete(post.Id);
 
-            var find = await _repository.GetPost(id);
-
-            Assert.Null(find);
+            Assert.True(result);
 
 
             RemoveAllPosts();
+        }
+
+        [Fact]
+        public async void RemovePost_ShouldNotPass()
+        {
+            await Assert.ThrowsAnyAsync<ArgumentNullException>(() => _service.Delete(null));
+        }
+
+        [Theory]
+        [InlineData("text test", "comment")]
+        public async void GetPost_ShouldPass(string text,string commentText)
+        {
+            RemoveAllPosts();
+
+            var post = await _service.AddPost(new Post {Text = text});
+            await _service.AddComment(new Comment {Post = post, Text = commentText });
+            var addedPost = await _service.GetPost(post.Id);
+
+            Assert.NotNull(addedPost.Id);
+            Assert.NotNull(addedPost.Comments.First().Id);
+            Assert.Equal(text, addedPost.Text);
+            Assert.Equal(commentText, addedPost.Comments.First().Text);
+            
+            RemoveAllPosts();
+        }
+
+        [Fact]
+        public async void GetPost_ShouldNotPass()
+        {
+            await Assert.ThrowsAnyAsync<ArgumentNullException>(()=> _service.GetPost(null));
         }
 
         private void RemoveAllPosts()
