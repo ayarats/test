@@ -42,19 +42,8 @@ namespace TestApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //try
-                //{
-                    var add = await _service.AddPost(_mapper.Map<Post>(post));
-                    return Ok(add);
-                //}
-                //catch (ArgumentNullException ex)
-                //{
-                //    return BadRequest("value cannot be null.");
-                //}
-                //catch (Exception ex)
-                //{
-                //    return BadRequest("Inner exception.");
-                //}
+                var add = await _service.AddPost(_mapper.Map<Post>(post));
+                return Created($"api/Main/{add.Id}", add);
             }
             return BadRequest(post);
         }
@@ -74,10 +63,6 @@ namespace TestApp.Controllers
             catch (ArgumentNullException ex)
             {
                 return BadRequest("Value cannot be null.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Inner exception.");
             }
         }
     }

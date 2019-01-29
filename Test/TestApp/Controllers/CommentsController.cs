@@ -27,19 +27,8 @@ namespace TestApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var add = await _service.AddComment(_mapper.Map<Comment>(comment));
-                    return Ok(add);
-                }
-                catch (ArgumentException ex)
-                {
-                    return BadRequest("Value cannot be null.");
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Inner exception.");
-                }
+                var add = await _service.AddComment(_mapper.Map<Comment>(comment));
+                return Created($"api/Comments/{comment.Id}", add);
             }
             return BadRequest(comment);
         }

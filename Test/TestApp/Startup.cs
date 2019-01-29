@@ -66,11 +66,12 @@ namespace TestApp
                     if (!(error is ArgumentNullException) && !(error is ArgumentException))
                     {
                         errResult.Title = "Unhandled exception.";
-                        errResult.Details = error.Message;
                         errResult.Status = 500;
+                        errResult.Details = error.Message;
                         errResult.Type = error.GetType().ToString();
                         errResult.InnerException = error.InnerException.Message;
                     }
+
 
                     logger.LogError(errResult.ToString());
 
